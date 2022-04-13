@@ -1,0 +1,27 @@
+{
+  "name": "lintubongari",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alkane22/Lintu-Backend.git"
+  },
+  "author": "Aleksei Nesterinen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alkane22/Lintu-Backend/issues"
+  },
+  "homepage": "https://github.com/Alkane22/Lintu-Backend#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15",
+    "request": "^2.88.2"
+  }
+}
