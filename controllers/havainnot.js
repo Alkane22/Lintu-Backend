@@ -1,33 +1,68 @@
 const havaintoRouter = require('express').Router()
+const havainto = require('../models/havainto')
+const User = require('../models/user')
+const mongoose = require('mongoose')
 
 let today = new Date()
 
-let havaintoDB = {
-    '1': {
-        observations:{'Varis': 10},
-        date: today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(),
-        county: 'Kontiolahti',
-        location: {'Latitude': 9, 'Longitude': 18},
-        user: 'userObjID1',
-        info: 'Näin 10 varista, oli komia näky'
-    },
-    '2': {
-        observations:{'Kesykyyhky': 5},
-        date: today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(),
-        county: 'Helsinki',
-        location: {'Latitude': 3, 'Longitude': 6},
-        user: 'userObjID2',
-        info: 'Torilla näkyi muutamana pulu :D'
-    }
-}
-
-havaintoRouter.get('/', (req, res) => {
-    res.json(havaintoDB)
+havaintoRouter.get('/', async (req, res) => {
+    const havainnot = await havainto.find({})
+    res.json(havainnot)
 })
 
-havaintoRouter.get('/:id', (req, res) => {
-    console.log('okasdoasodkoaskd')
-    res.json(havaintoDB[req.params.id])
+havaintoRouter.get('/:id', async (req, res) => {
+    try{
+        const havainnot = await havainto.findById(req.params.id)
+        if (havainnot) {
+            res.status(200).json(havainnot)
+        } else {
+            //if id was not found from database
+            res.status(404).json({error: 'id not found'})
+        }
+    } catch (e) {
+        //mongoose id lenght min 12
+        res.status(400).json({error: 'id has wrong format'})
+    }
+})
+
+havaintoRouter.post('/', async (req, res) => {
+    const body = req.body
+    const timeNow = today.getTime()
+
+    const useri = await User.findById(req.user.id)
+
+    try{
+        const newHavainto = new havainto({
+            observations: body.observations,
+            date: timeNow,
+            county: body.county || 'Empty',
+            location: body.location,
+            user: useri._id,
+            info: body.info || 'Empty'
+        })
+
+        const savedHavainto = await newHavainto.save()
+        res.status(201).json(savedHavainto)
+
+    } catch(e){
+        res.status(400).json({'error' : e.name})
+    }
+
+})
+
+havaintoRouter.delete('/:id', async (req, res) => {
+    try{
+        const dbres = await havainto.deleteOne({ '_id': mongoose.Types.ObjectId(req.params.id) })
+        if(dbres.deletedCount !== 0){
+            res.status(200).end()
+        } else {
+            //if id was not in db the db responds with {...deletedCount: 0 }
+            res.status(404).json({error: 'id not found'})
+        }
+    } catch (e){
+        //mongoose id lenght min 12
+        res.status(400).json({error: 'id has wrong format'})
+    }
 })
 
 module.exports = havaintoRouter

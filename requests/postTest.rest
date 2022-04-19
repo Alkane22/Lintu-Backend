@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/havainnot/ HTTP/1.1
+Content-Type: application/json
+
+{
+        "observations": { "Kesykyyhky": 5 },
+        "county": "Helsinki",
+        "location": { "Latitude": 3, "Longitude": 6 },
+        "user": "userasd",
+        "info": "Torilla näkyi muutamana pulu :D"
+}

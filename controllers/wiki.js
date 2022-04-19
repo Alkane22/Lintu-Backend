@@ -81,10 +81,10 @@ wikiRouter.get('/wikiapi/:id', async (req, res) => {
             infobox[key] = value.toString();
 
         //respond with json of the infobox
-        res.json(infobox)
+        res.status(200).json(infobox)
     } catch (e) {
         //cant parse be because page was not found or maybe wiki is down or something.
-        res.json({ error: 'notFound' })
+        res.status(404).json({ error: 'notFound' })
     }
     //const page_data = await wiki.page(req.params.id, {})
 

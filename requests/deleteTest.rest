@@ -1,0 +1,2 @@
+@id = 625e7cdeacdfa2b3fc997ec3
+DELETE http://localhost:3001/api/havainnot/{{id}}
