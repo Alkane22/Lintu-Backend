@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "cross-env nodemon index.js",
     "test": "cross-env jest --verbose --runInBand --forceExit"
   },
   "repository": {
@@ -25,6 +25,7 @@
     "express": "^4.17.3",
     "jest": "^27.5.1",
     "JSONPath": "^0.11.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.0",
     "nodemon": "^2.0.15",
     "request": "^2.88.2",

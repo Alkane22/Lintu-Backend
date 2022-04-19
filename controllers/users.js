@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 usersRouter.post('/', async (req, res) => {
     const { username, password } = req.body
@@ -12,7 +13,7 @@ usersRouter.post('/', async (req, res) => {
         })
     }
 
-    if (password.length < 3){
+    if (password.length < 3) {
         return res.status(400).json({
             error: 'password is too short'
         })
@@ -33,8 +34,30 @@ usersRouter.post('/', async (req, res) => {
 
 usersRouter.get('/', async (req, res) => {
     const users = await User.find({})
-        //.populate('blogs', {url:1, title:1, author:1, id:1})
+    //.populate('blogs', {url:1, title:1, author:1, id:1})
     res.json(users)
+})
+
+usersRouter.post('/login', async (req, res) => {
+    //check if user/token already saved <- TODO
+    //Request body should contain name and password(encrypt?:D?)
+    if (typeof req.body.username === 'string') {
+        const userFromDB = await User.findOne({ username: req.body.username })
+        if (await bcrypt.compare(req.body.password, userFromDB.passwordHash)) {
+            const userForToken = {
+                username: userFromDB.username,
+                id: userFromDB._id
+            }
+
+            const token = jwt.sign(userForToken, process.env.SECRET_KEY)
+            res.status(200).json({ token })
+
+        } else {
+            res.status(400).json({ error: 'invalid password' })
+        }
+    } else {
+        res.status(400).json({ error: "Request.body.user missing" })
+    }
 })
 
 module.exports = usersRouter
