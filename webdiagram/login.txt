@@ -1,0 +1,15 @@
+note over selain:
+Username & password
+end note
+
+selain->palvelin: POST /api/user/login
+palvelin->database:  get user
+database->palvelin: return user
+note over palvelin:
+Compare passwords,
+Create token,
+end note
+palvelin->selain: token
+note over selain:
+Save token
+end note
