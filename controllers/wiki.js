@@ -1,7 +1,8 @@
 const wikiRouter = require('express').Router()
-const request = require('request');
+const request = require('request')
 
-const jPath = require('JSONPath')
+const jPath = require('JSONPath');
+const Wikiapi = require('wikiapi');
 
 const wikisearch = (haku, callback) => {
     const url =
@@ -47,14 +48,47 @@ wikiRouter.get('/info/:id', (req, res) => {
     })
 })
 
-wikiRouter.get('/image/:id/:size',(req, res) => {
+wikiRouter.get('/image/:id/:size', (req, res) => {
     //http://localhost:3001/api/wiki/image/hauki/200
-    wikiImage(req.params.id, req.params.size,(error, data) => {
+    wikiImage(req.params.id, req.params.size, (error, data) => {
         if (!error) {
             res.json(jPath.eval(data, "$..source"))
         }
     })
 })
 
+wikiRouter.get('/wikiapi/:id', async (req, res) => {
+    //Create Wikiapi object from finnish wikipedia
+    const wiki = new Wikiapi('fi')
+
+    //The page might not exist so im using try&catch. this doesn't feel like the best solution but anyways..
+    try {
+        //Find wikipedia article with requested id(name)
+        const page_data = await wiki.page(req.params.id, {})
+
+        const parsed = page_data.parse();
+        let infobox;
+
+        //Read Infobox templates, convert to JSON.
+        parsed.each('template', template_token => {
+            if (template_token.name.startsWith('Taksonomia/eläimet')) {
+                infobox = template_token.parameters;
+                return parsed.each.exit;
+            }
+        });
+
+        for (const [key, value] of Object.entries(infobox))
+            infobox[key] = value.toString();
+
+        //respond with json of the infobox
+        res.json(infobox)
+    } catch (e) {
+        //cant parse be because page was not found or maybe wiki is down or something.
+        res.json({ error: 'notFound' })
+    }
+    //const page_data = await wiki.page(req.params.id, {})
+
+
+})
 
 module.exports = wikiRouter
