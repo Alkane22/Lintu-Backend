@@ -1,8 +1,10 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI2MjVmYTRkNmM2OWMzNzU3Y2UyZmZlYTYiLCJpYXQiOjE2NTA0NDg0NTJ9.OerneQfvUcSxhwgGLVVnzA2W6iEzLLhg4gKwXvv2JW8
 POST http://localhost:3001/api/havainnot/ HTTP/1.1
 Content-Type: application/json
+Authorization: bearer {{token}}
 
 {
-        "observations": { "Kesykyyhky": 5 },
+        "observations": { "Kesykyyhky": 5, "Varis": 3, "Punatulkku":6 },
         "county": "Helsinki",
         "location": { "Latitude": 3, "Longitude": 6 },
         "user": "userasd",

@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const havaintoSchema = mongoose.Schema({
     //observations: { 'Varis': 10 },
+    //i have to add a max length to object array or funny(not) stuff might happen //TODO
     observations: {
         type: Object,
         required: true

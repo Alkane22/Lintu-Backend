@@ -23,8 +23,10 @@ app.use('/api/wiki', wikiRouter)
 
 app.use('/api/havainnot', havaintoRouter)
 //esim http://localhost:3001/api/havainnot/1
+//esim http://localhost:3001/api/havainnot/search/talitiainen
 
 app.use('/api/user', usersRouter)
+//esim http://localhost:3001/api/user/login
 
 const PORT = config.PORT || 3001
 app.listen(PORT, () => {
