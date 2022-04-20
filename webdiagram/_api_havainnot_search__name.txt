@@ -1,0 +1,26 @@
+title /api/havainnot/search/:name
+
+note over Client:
+User looks for bird names
+that will be added to observations
+end note:
+
+Client->Server: bird name
+
+note over Server: Check if bird in DB
+
+Server->Database: bird name
+
+Database->Server: bird not found
+
+note over Server: Search bird with wikiapi
+
+Server->WikiApi: bird name
+
+WikiApi->Server: bird page wikitext
+
+note over Server: Create bird JSON from parsed wikitext
+
+Server->Database: bird JSON
+
+Server->Client: bird JSON
