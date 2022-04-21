@@ -128,6 +128,7 @@ havaintoRouter.delete('/:id', async (req, res) => {
 
 //update is missing from havainto/
 
+
 havaintoRouter.get('/search/:name', async (req, res) => {
     const sName = req.params.name.toLowerCase()
     const nameInDB = await lintu.find({ name: sName })
