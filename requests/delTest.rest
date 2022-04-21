@@ -1,0 +1,4 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI2MjYxMTI5ZDliYWU3YzY0Mjc3MTBiNTAiLCJpYXQiOjE2NTA1MzY3ODIsImV4cCI6MTY1MDU0MDM4Mn0.ng4zIa07KRIIOZB5pOkg7j05GtYkO_H4IU50cyoy5u4
+DELETE  http://localhost:3001/api/havainnot/62612a20d324b3e05144083c HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}

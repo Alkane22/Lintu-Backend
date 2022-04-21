@@ -5,6 +5,7 @@ const api = supertest(app)
 
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
+const Lintu = require('../models/lintu')
 const helper = require('./test_helper')
 
 
@@ -39,16 +40,16 @@ describe('when there is initially one user at db', () => {
     expect(usernames).toContain(newUser.username)
   })
 
-  describe('loggin in', () => {
-    test('login', async () => {
-      const resp = await api
-        .post('/api/user/login')
-        .send({ username: "admin", password: "admin" })
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
 
-      console.log(resp.body.token)
-    })
+  test('can login', async () => {
+    const resp = await api
+      .post('/api/user/login')
+      .send({ username: "admin", password: "admin" })
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    console.log(resp.body.token)
   })
+
 })
 

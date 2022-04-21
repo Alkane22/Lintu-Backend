@@ -6,6 +6,7 @@ const wikiRouter = require('./controllers/wiki')
 const config = require('./utils/config')
 const mongoose = require('mongoose')
 
+const errorHandler = require('./middlewares/errorHandler')
 const logger = require('./utils/logger')
 const requestLogger = require('./middlewares/requestLogger')
 
@@ -27,6 +28,9 @@ app.use('/api/havainnot', havaintoRouter)
 
 app.use('/api/user', usersRouter)
 //esim http://localhost:3001/api/user/login
+
+
+app.use(errorHandler.errorHandler)
 
 const PORT = config.PORT || 3001
 app.listen(PORT, () => {
