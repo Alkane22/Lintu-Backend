@@ -26,6 +26,14 @@ const initialHavaintos = [
         date: timeNow.getTime(),
         user: "625e976a05636ccf65890b9e",
         info: "Spottasin Harakan"
+    },
+    {
+        observations: { Sinitiainen: 10, Fasaani: 5, Kuusitiainen: 2 },
+        county: "Penttilä",
+        location: { Latitude: 1, Longitude: 2 },
+        date: timeNow.getTime(),
+        user: "625e976a05636ccf65890b9e",
+        info: "Tämmösii tuli vastaan."
     }
 ]
 

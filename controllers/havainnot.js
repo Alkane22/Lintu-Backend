@@ -5,15 +5,25 @@ const lintu = require('../models/lintu')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
+const request = require('request')//wikiImage
+const jPath = require('JSONPath')//wikiImage
+
 const extractor = require('./tokenExtractor')
 const searchWiki = require('./wikilight')
 
 let today = new Date()
 
 havaintoRouter.get('/', async (req, res) => {
-    const havainnot = await havainto.find({})//.populate('user', {username:1}) crashes if the user doesnt exists
-    res.json(havainnot)
-    console.log(havainnot)
+    try {
+        const havainnot = await havainto.find({})
+            .populate('observations.bird')
+            .populate('user', { username: 1 }) //crashes if the user doesnt exists
+        res.json(havainnot)
+    } catch (e) {
+        res.status(400).json({ error: e })
+    }
+
+    //console.log(havainnot)
 })
 
 havaintoRouter.get('/:id', async (req, res) => {
@@ -98,8 +108,8 @@ havaintoRouter.delete('/:id', async (req, res) => {
 
     //does havainto exist in db?
     const havaintoFromDB = await havainto.findById(mongoose.Types.ObjectId(req.params.id))
-    if(havaintoFromDB === null){
-        res.status(400).json({error: 'Havainto does not exist in database'})
+    if (havaintoFromDB === null) {
+        res.status(400).json({ error: 'Havainto does not exist in database' })
         return
     }
 
@@ -118,17 +128,35 @@ havaintoRouter.delete('/:id', async (req, res) => {
     }
 
     //logged in user and the havainto creator has to be equal.
-    if(user.id === havaintoFromDB.user.toString()){
+    if (user.id === havaintoFromDB.user.toString()) {
         havaintoFromDB.delete()
-        res.status(200).json({message: 'Havainto deleted'})
+        res.status(200).json({ message: 'Havainto deleted' })
     } else {
-        res.status(401).json({error: 'You are not authorized to delete this.'})
+        res.status(401).json({ error: 'You are not authorized to delete this.' })
     }
 })
 
-//update is missing from havainto/
+//put is missing from havainto..
+//havaintoRouter.put(blablalbla)
 
-
+//This is in the wrong module, needed for /search/:name, too lazy to refactor //TODO
+const wikiImage = (haku, koko, callback) => {
+    const url = `https://fi.wikipedia.org/w/api.php?action=query&titles=${haku}&prop=pageimages&format=json&pithumbsize=${koko}`
+    request({ uri: url, json: true }, (error, response, body) => {
+        if (error) {
+            callback("ei yhteyttä darkboxiin", undefined);
+        } else if (body.error) {
+            callback("Ei oo paikkaa", undefined);
+        } else {
+            //callback(undefined, body.query.pages[0].extract);
+            if(body.query){
+                callback(undefined, body.query.pages);
+            }
+            callback("mun wiki api on baska", undefined);
+        }
+    })
+}
+//This is in the wrong module, too lazy to refactor.
 havaintoRouter.get('/search/:name', async (req, res) => {
     const sName = req.params.name.toLowerCase()
     const nameInDB = await lintu.find({ name: sName })
@@ -144,9 +172,34 @@ havaintoRouter.get('/search/:name', async (req, res) => {
             res.status(404).json({ error: 'name not found' })
         } else {
             //Found from wiki, creating db entry.
+
+            //this is code is fucking bad... "temporary" for now.. //TODO
+            wikiImage(sName, '400' /*image size*/, (error, data) => {
+                if (!error) {
+                    const wikiImg = jPath.eval(data, "$..source")
+
+                    const newLintu = new lintu({
+                        name: sName,
+                        image: wikiImg[0],//parsedWiki.kuva,
+                        lahko: parsedWiki.lahko,
+                        heimo: parsedWiki.heimo,
+                        suku: parsedWiki.suku,
+                        laji: parsedWiki.laji,
+                        elinvoimaisuus: parsedWiki.status || 'ei tietoa'
+                    })
+
+                    newLintu.save()
+
+                    res.status(201).json(newLintu)
+                } else {
+                    res.status(400).json({error: `wikiImage(${sName}) problem.. utf-8 related?`})
+                }
+            })
+
+            /*
             const newLintu = new lintu({
                 name: sName,
-                image: parsedWiki.kuva,
+                image: myimg,//parsedWiki.kuva,
                 lahko: parsedWiki.lahko,
                 heimo: parsedWiki.heimo,
                 suku: parsedWiki.suku,
@@ -157,6 +210,7 @@ havaintoRouter.get('/search/:name', async (req, res) => {
             const savedLintu = await newLintu.save()
 
             res.status(201).json(newLintu)
+            */
         }
     } else {
         //if database has entry with name return that entry

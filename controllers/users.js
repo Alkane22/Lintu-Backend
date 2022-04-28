@@ -43,6 +43,11 @@ usersRouter.post('/login', async (req, res) => {
     //Request body should contain name and password(encrypt?:D?)
     if (typeof req.body.username === 'string') {
         const userFromDB = await User.findOne({ username: req.body.username })
+        if(!userFromDB){
+            res.status(404).json({error: 'Username does not exist.'})
+            return
+        }
+
         if (await bcrypt.compare(req.body.password, userFromDB.passwordHash)) {
             const userForToken = {
                 username: userFromDB.username,
@@ -58,6 +63,18 @@ usersRouter.post('/login', async (req, res) => {
         }
     } else {
         res.status(400).json({ error: "Request.body.user missing" })
+    }
+})
+
+usersRouter.get('/:id', async (req, res) => {
+    const userFromDB = await User.findById(req.params.id)
+    if(userFromDB){
+        //res.status(200).json({username: `${userFromDB.username}`, observations: `${userFromDB.observations}`})
+        res.status(200).json(userFromDB)
+        console.log(userFromDB);
+    } else {
+        res.status(404).json({error: 'User id not found'})
+        console.log('wtf')
     }
 })
 
