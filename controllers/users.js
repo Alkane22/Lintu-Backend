@@ -56,7 +56,7 @@ usersRouter.post('/login', async (req, res) => {
 
             // token expires in 60*60 seconds, that is, in one hour
             const token = jwt.sign(userForToken, process.env.SECRET_KEY, { expiresIn: 60*60 })
-            res.status(200).json({ token })
+            res.status(200).json({ token, name: userFromDB.username })
 
         } else {
             res.status(400).json({ error: 'invalid password' })

@@ -192,7 +192,8 @@ havaintoRouter.get('/search/:name', async (req, res) => {
 
                     res.status(201).json(newLintu)
                 } else {
-                    res.status(400).json({error: `wikiImage(${sName}) problem.. utf-8 related?`})
+                    //ööö
+                    //res.status(400).json({error: `wikiImage(${sName}) problem.. utf-8 related?`})
                 }
             })
 
