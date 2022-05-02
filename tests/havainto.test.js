@@ -29,6 +29,7 @@ describe('can add/del /api/havainnot', () => {
     })
 
     test('adding birds', async () => {
+        //wikiapi ja utf-8 ongela TODO
         await Lintu.deleteMany({})
         await Promise.all(
             helper.birdnames.map(async (bird) => {
