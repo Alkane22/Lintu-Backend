@@ -48,7 +48,7 @@ havaintoRouter.post('/', async (req, res) => {
 
     //body has no token so no reason to go on
     if (!token) {
-        res.status(400).json({ error: 'token missing from request' })
+        res.status(400).json({ error: 'Kirjaudu sisään.' })
         return
     }
 
@@ -56,7 +56,8 @@ havaintoRouter.post('/', async (req, res) => {
     try {
         user = jwt.verify(token, process.env.SECRET_KEY)
     } catch (error) {
-        res.status(400).json({ error })
+        //res.status(400).json({ error })
+        res.status(400).json({error: 'Kirjaudu sisään.'})
         return
     }
 
@@ -66,7 +67,7 @@ havaintoRouter.post('/', async (req, res) => {
     for (const [key, value] of Object.entries(body.observations)) {
         const dataBaseResponse = await lintu.findOne({ name: key.toLowerCase() })
         if (dataBaseResponse === null) {
-            res.status(400).json({ error: key + ' does not exist in database' })
+            res.status(400).json({ error: key + ' ei löydy databasesta' })
             return
         } else {
             const transformedObservation = {
@@ -75,6 +76,10 @@ havaintoRouter.post('/', async (req, res) => {
             }
             confirmedObservations.push(transformedObservation)
         }
+    }
+
+    if(confirmedObservations.length === 0){
+        return res.status(400).json({error: 'sinulla tätyy olla vähintään yksi havainto'})
     }
 
     const timeNow = today.getTime()
@@ -86,17 +91,17 @@ havaintoRouter.post('/', async (req, res) => {
         const newHavainto = new havainto({
             observations: confirmedObservations,
             date: timeNow,
-            county: body.county || 'Empty',
+            county: body.county || '',
             location: body.location,
             user: useri._id,
-            info: body.info || 'Empty'
+            info: body.info || ''
         })
 
         const savedHavainto = await newHavainto.save()
         res.status(201).json(savedHavainto)
 
     } catch (e) {
-        res.status(400).json({ 'error': e.name })
+        res.status(400).json({ error: e.name })
     }
 
 })
@@ -115,7 +120,7 @@ havaintoRouter.delete('/:id', async (req, res) => {
 
     //body has no token so no reason to go on
     if (!token) {
-        res.status(400).json({ error: 'token missing from request' })
+        res.status(400).json({ error: 'kirjaudu sisään' })
         return
     }
 
@@ -123,16 +128,17 @@ havaintoRouter.delete('/:id', async (req, res) => {
     try {
         user = jwt.verify(token, process.env.SECRET_KEY)
     } catch (error) {
-        res.status(400).json({ error })
+        //res.status(400).json({ error })
+        res.status(400).json({error: 'puuttuvat oikeudet(2).'})
         return
     }
 
     //logged in user and the havainto creator has to be equal.
     if (user.id === havaintoFromDB.user.toString()) {
         havaintoFromDB.delete()
-        res.status(200).json({ message: 'Havainto deleted' })
+        return res.status(200).json({ message: 'havainto poistettu' })
     } else {
-        res.status(401).json({ error: 'You are not authorized to delete this.' })
+        return res.status(401).json({ error: 'puuttuvat oikeudet.' })
     }
 })
 

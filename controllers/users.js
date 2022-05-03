@@ -12,13 +12,13 @@ usersRouter.post('/', async (req, res) => {
 
     if (existingUser) {
         return res.status(400).json({
-            error: 'username must be unique'
+            error: 'käyttäjä tunnus on varattu'
         })
     }
 
     if (password.length < 3) {
         return res.status(400).json({
-            error: 'password is too short'
+            error: 'salasana on liian lyhyt'
         })
     }
 
@@ -51,7 +51,7 @@ usersRouter.post('/login', async (req, res) => {
     if (typeof req.body.username === 'string') {
         const userFromDB = await User.findOne({ username: req.body.username })
         if (!userFromDB) {
-            res.status(404).json({ error: 'Username does not exist.' })
+            res.status(404).json({ error: 'käyttäjä tunnusta ei ole olemassa' })
             return
         }
 
@@ -66,7 +66,7 @@ usersRouter.post('/login', async (req, res) => {
             return res.status(200).json({ token, name: userFromDB.username })
 
         } else {
-            return res.status(400).json({ error: 'invalid password' })
+            return res.status(400).json({ error: 'väärä salasana' })
         }
     } else {
         return res.status(400).json({ error: "Request.body.user missing" })

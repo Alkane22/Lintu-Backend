@@ -1,0 +1,77 @@
+[33mcommit 5a601035dad067be71288834022d8e5261312041[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31mheroku/master[m[33m)[m
+Author: aksu <Scyzhe@hotmail.com>
+Date:   Mon May 2 17:04:17 2022 +0300
+
+    added totokenChecker and fixed some bugs
+
+[33mcommit 186ed9553a915790bf234aa9ce55ebdfed0e2689[m
+Author: aksu <Scyzhe@hotmail.com>
+Date:   Fri Apr 29 15:18:35 2022 +0300
+
+    minor changes
+
+[33mcommit 785203c2e17ed280211579ffa30870ba2da7644c[m
+Author: aksu <Scyzhe@hotmail.com>
+Date:   Thu Apr 28 19:04:49 2022 +0300
+
+    Modified observations schema and added propper populate to get, modified wiki search image
+
+[33mcommit 6d87430ee3cc26d3b24703dac66d48139425c60d[m
+Author: Aleksei Nesterinen <aleksei.nesterinen@edu.riveria.fi>
+Date:   Thu Apr 21 14:30:50 2022 +0300
+
+    del havainto auth added, created more tests.2
+
+[33mcommit 060e4aae8d964115df769ab82633c013889423e3[m
+Author: Aleksei Nesterinen <aleksei.nesterinen@edu.riveria.fi>
+Date:   Thu Apr 21 14:28:39 2022 +0300
+
+    del havainto auth added, created more tests.
+
+[33mcommit abe5ffd15d3d8909ed1175f049d8a994fa1e60df[m
+Author: Aleksei Nesterinen <aleksei.nesterinen@edu.riveria.fi>
+Date:   Wed Apr 20 14:11:28 2022 +0300
+
+    webdiagrams
+
+[33mcommit b654d4b3f7484a5c94dfb9dcf44318676ecaa8a4[m
+Author: Aleksei Nesterinen <aleksei.nesterinen@edu.riveria.fi>
+Date:   Wed Apr 20 14:01:45 2022 +0300
+
+    updated havainto post & wikiapi
+
+[33mcommit bf21e906c2dbaff2a85dba96135b2f3b7907f829[m
+Author: aksu <Scyzhe@hotmail.com>
+Date:   Tue Apr 19 23:20:56 2022 +0300
+
+    login webdiagrams
+
+[33mcommit aa05adf381ca09f6d2a8035b2921ad122b36e1af[m
+Author: aksu <Scyzhe@hotmail.com>
+Date:   Tue Apr 19 23:06:12 2022 +0300
+
+    User login and token added
+
+[33mcommit 525c8238e77160dc23bde2b7c437b47ed8ec85b3[m
+Author: Aleksei Nesterinen <aleksei.nesterinen@edu.riveria.fi>
+Date:   Tue Apr 19 14:45:07 2022 +0300
+
+    mongoDB, controller modifications, users, some tests
+
+[33mcommit 7e6fb4ca8a628951a08a9a830faa9694799ba23b[m
+Author: aksu <Scyzhe@hotmail.com>
+Date:   Tue Apr 19 08:00:36 2022 +0300
+
+    wikiapi
+
+[33mcommit 28913f35566670dfc033f5fd8569aa5acaee07fa[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Aleksei Nesterinen <aleksei.nesterinen@edu.riveria.fi>
+Date:   Wed Apr 13 13:13:33 2022 +0300
+
+    wikiImage
+
+[33mcommit 7f73f82527f07a928213e351819e43236b724631[m
+Author: Aleksei Nesterinen <aleksei.nesterinen@edu.riveria.fi>
+Date:   Wed Apr 13 11:59:52 2022 +0300
+
+    Node base and wiki controller
